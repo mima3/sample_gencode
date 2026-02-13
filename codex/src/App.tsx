@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+﻿import { useState } from 'react'
 import './App.css'
 import Hero from './components/Hero'
 import QuestionList from './components/QuestionList'
@@ -13,18 +13,22 @@ import {
   createBurnoutInitialAnswers,
 } from './data/mentalTests'
 import { calculateBoreoutResult, calculateBurnoutResults } from './utils/scoring'
-import type { ActiveTest } from './types/mental'
+import type { ActiveTest, TestResult } from './types/mental'
 
 function App() {
   const [activeTest, setActiveTest] = useState<ActiveTest>('burnout')
   const [burnoutAnswers, setBurnoutAnswers] = useState(createBurnoutInitialAnswers)
   const [boreoutAnswers, setBoreoutAnswers] = useState(createBoreoutInitialAnswers)
+  const [burnoutResults, setBurnoutResults] = useState<TestResult[] | null>(null)
+  const [boreoutResult, setBoreoutResult] = useState<TestResult | null>(null)
 
-  const burnoutResults = useMemo(
-    () => calculateBurnoutResults(burnoutAnswers, burnoutQuestions),
-    [burnoutAnswers],
-  )
-  const boreoutResult = useMemo(() => calculateBoreoutResult(boreoutAnswers), [boreoutAnswers])
+  const handleBurnoutCalculate = () => {
+    setBurnoutResults(calculateBurnoutResults(burnoutAnswers, burnoutQuestions))
+  }
+
+  const handleBoreoutCalculate = () => {
+    setBoreoutResult(calculateBoreoutResult(boreoutAnswers))
+  }
 
   return (
     <main className="app-shell">
@@ -44,7 +48,12 @@ function App() {
             questions={burnoutQuestions}
             onChange={setBurnoutAnswers}
           />
-          <ResultGrid results={burnoutResults} />
+          <div className="action-row">
+            <button className="calculate-button" type="button" onClick={handleBurnoutCalculate}>
+              判定する
+            </button>
+          </div>
+          {burnoutResults && <ResultGrid results={burnoutResults} />}
         </section>
       ) : (
         <section className="panel">
@@ -59,7 +68,12 @@ function App() {
             questions={boreoutQuestions}
             onChange={setBoreoutAnswers}
           />
-          <ResultGrid results={[boreoutResult]} />
+          <div className="action-row">
+            <button className="calculate-button" type="button" onClick={handleBoreoutCalculate}>
+              判定する
+            </button>
+          </div>
+          {boreoutResult && <ResultGrid results={[boreoutResult]} />}
         </section>
       )}
     </main>

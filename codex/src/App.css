@@ -130,6 +130,29 @@
   color: #3f2d18;
 }
 
+.action-row {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.calculate-button {
+  appearance: none;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.7rem 1.6rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.calculate-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+
 .result-grid {
   margin-top: 1rem;
   display: grid;
