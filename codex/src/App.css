@@ -256,6 +256,148 @@
   color: #6a5135;
 }
 
+.history-chart {
+  margin-top: 1rem;
+  height: 260px;
+  border: 1px solid #e4cfab;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fff9ef 0%, #fffdf8 100%);
+  padding: 0.6rem;
+  overflow-x: auto;
+}
+
+.history-line-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.history-line-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #6a5135;
+}
+
+.history-line-legend-dot {
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 50%;
+  background: #9b5d26;
+}
+
+.history-line-chart {
+  width: 100%;
+  min-width: 420px;
+  height: calc(100% - 28px);
+}
+
+.history-line-axis {
+  stroke: #d7bc8f;
+  stroke-width: 1;
+}
+
+.history-line-grid {
+  stroke: #ead7b8;
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+}
+
+.history-line-grid-label {
+  fill: #8f7352;
+  font-size: 10px;
+  text-anchor: end;
+}
+
+.history-line-path {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.history-line-point {
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.history-line-value {
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.history-line-path.series-emotional,
+.history-line-point.series-emotional,
+.history-line-value.series-emotional {
+  stroke: #c2543f;
+  fill: #c2543f;
+}
+
+.history-line-path.series-emotional {
+  stroke: #c2543f;
+  fill: none;
+}
+
+.history-line-legend-dot.series-emotional {
+  background: #c2543f;
+}
+
+.history-line-path.series-depersonalization,
+.history-line-point.series-depersonalization,
+.history-line-value.series-depersonalization {
+  stroke: #ba8c26;
+  fill: #ba8c26;
+}
+
+.history-line-path.series-depersonalization {
+  stroke: #ba8c26;
+  fill: none;
+}
+
+.history-line-legend-dot.series-depersonalization {
+  background: #ba8c26;
+}
+
+.history-line-path.series-accomplishment,
+.history-line-point.series-accomplishment,
+.history-line-value.series-accomplishment {
+  stroke: #3f7a57;
+  fill: #3f7a57;
+}
+
+.history-line-path.series-accomplishment {
+  stroke: #3f7a57;
+  fill: none;
+}
+
+.history-line-legend-dot.series-accomplishment {
+  background: #3f7a57;
+}
+
+.history-line-path.series-boreout,
+.history-line-point.series-boreout,
+.history-line-value.series-boreout {
+  stroke: #9b5d26;
+  fill: #9b5d26;
+}
+
+.history-line-path.series-boreout {
+  stroke: #9b5d26;
+  fill: none;
+}
+
+.history-line-legend-dot.series-boreout {
+  background: #9b5d26;
+}
+
+.history-line-index {
+  fill: #6a5135;
+  font-size: 10px;
+  text-anchor: middle;
+}
+
 .history-list {
   margin-top: 1rem;
   display: grid;
