@@ -115,7 +115,8 @@ describe('history storage', () => {
 
   it('does not throw when localStorage.setItem fails', () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
-    const setItemSpy = vi.spyOn(window.localStorage.__proto__, 'setItem').mockImplementation(() => {
+    const storageProto = Object.getPrototypeOf(window.localStorage) as Storage
+    const setItemSpy = vi.spyOn(storageProto, 'setItem').mockImplementation(() => {
       throw new Error('quota exceeded')
     })
 
