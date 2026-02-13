@@ -35,3 +35,11 @@ export type TestResult = {
   label: string
   guide: string
 }
+
+export type HistoryEntry = {
+  id: string
+  createdAt: string
+  testType: ActiveTest
+  answers: Answers
+  results: TestResult[]
+}
