@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Boreout</title>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="./base.css" />
+<script src="./jsrender.min.js" type="text/javascript"></script>
+<script id="selectTemplate" type="text/x-jsrender">
+<tr>
+  <td>{{:message}}</td>
+  <td>
+    <select id={{:selectId}} category={{:category}}>
+      <option value=0>×</option>
+      <option value=1>○</option>
+    </select>
+  </td>
+</tr>
+</script>
+
+<script id="resultTemplate" type="text/x-jsrender">
+  <div>
+    <h3>{{:title}}</h3>
+    <div class="result {{:result}}">{{:message}}</div>
+    <p>score:{{:score}}</p>
+    <p>{{:guide}}</p>
+  </div>
+</script>
+
+<script type="text/javascript">
+$(function () {
+  var Category = {
+    None: 0
+  };
+  var Result = {
+    'Ok': {message: '大丈夫'},
+    'Warning': {message: '警告'} 
+  };
+  
+  var questions = [
+    {message: '仕事中に私用を片付ける。', category: Category.None}, // 1
+    {message: '仕事が少なすぎると感じて退屈する。', category: Category.None}, // 2
+    {message: '時々、実際には何もしていないのに仕事をしているふりをする。', category: Category.None}, // 3
+    {message: '別に忙しくなかったのに、退社した後、すごく疲れを感じる。', category: Category.None}, // 4
+    {message: 'どちらかといえば今の仕事に不満だ。', category: Category.None}, // 5
+    {message: '仕事に意義を見いだせない。', category: Category.None}, // 6
+    {message: 'その気になればもっと早く仕事を終えることができる。', category: Category.None}, // 7
+    {message: '本当はほかのことをしたいのだが、収入が減るからと転職をためらっている。', category: Category.None}, // 8
+    {message: '仕事中に私用のメールを同僚に送る。', category: Category.None}, // 9
+    {message: '仕事にあまり興味ない。', category: Category.None}, // 9
+  ];
+  
+  function initQuestion() {
+    for (var i = 0; i < questions.length; ++i) {
+      var obj = {
+        message: questions[i].message,
+        category: questions[i].category,
+        selectId: i
+      };
+      var html = $("#selectTemplate").render(obj);
+      $('#questions').append(html);
+    }
+  }
+
+  initQuestion();
+  $('button').button();
+  // 指定のキーの値を更新
+  $("#cal").click(function(){
+    $('#result').empty();
+    createResult(Category.None, resultBoarOut, 'ボーアウト診断', '４つ以上、○をつけた人はボーアウトになっているか、その予備軍です。');
+  });
+
+  function createResult(category, retFunc, title, guide) {
+    var score = totalSelectValue(category);
+    var ret = retFunc(score);
+    console.log(score);
+    console.log(ret);
+    var obj = {
+      title: title,
+      result: ret,
+      message: Result[ret].message,
+      score: score,
+      guide: guide
+    }
+    var html = $("#resultTemplate").render(obj);
+    $('#result').append(html);
+  }
+
+  function totalSelectValue(category) {
+    var total = 0;
+    $('[category="' + category + '"]', '#questions').each(function() {
+      total = total + parseInt($(this).val());
+    });
+    return total;
+  }
+  
+  // 
+  function resultBoarOut(score) {
+    if (score < 4) {
+      return 'Ok';
+    } else {
+      return 'Warning';
+    }
+  }
+}); 
+</script>
+</head>
+<body>
+<div id="contents">
+  <h1>ボーアウト</h1>
+  <p>あなた自身、あるいは知り合いがボーアウトの状態でいるか確かめることができます。</p>
+  <p>ひと月のうちに何度もそういうことをしてたり、感じて足りしてた場合は、○をつけてください。</p>
+  <table id="questions">
+  </table>
+  <button id="cal">判定</button>
+  <h2>結果</h2>
+  <div id="result">
+  </div>
+</div>
+</body>
+</html>

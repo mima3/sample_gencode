@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>BurnOut</title>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/themes/smoothness/jquery-ui.css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.0/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="./base.css" />
+<script src="./jsrender.min.js" type="text/javascript"></script>
+<script id="selectTemplate" type="text/x-jsrender">
+<tr>
+  <td>{{:message}}</td>
+  <td>
+    <select id={{:selectId}} category={{:category}}>
+      <option value=1>ない</option>
+      <option value=2>まれにある</option>
+      <option value=3>時々ある</option>
+      <option value=4>しばしある</option>
+      <option value=5>いつもある</option>
+    </select>
+  </td>
+</tr>
+</script>
+
+<script id="resultTemplate" type="text/x-jsrender">
+  <div>
+    <h3>{{:title}}</h3>
+    <div class="result {{:result}}">{{:message}}</div>
+    <p>score:{{:score}}</p>
+    <p>{{:guide}}</p>
+  </div>
+</script>
+
+<script type="text/javascript">
+$(function () {
+  var Category = {
+    None: 0,
+    emotionalExhaustion: 1,
+    depersonalization: 2,
+    personalAccomplishment: 3,
+  };
+  var Result = {
+    'Ok': {message: '大丈夫'},
+    'Normal': {message: '平均的'},
+    'Caution': {message: '注意'},
+    'Warning': {message: '要注意'},
+    'Danger': {message: '危険'} 
+  };
+  
+  var questions = [
+    {message: 'こんな,仕事もうやめたいと思うことがある。', category: Category.emotionalExhaustion}, // 1
+    {message: 'われを忘れるほど仕事に熱中することがある。', category: Category.personalAccomplishment}, // 2
+    {message: 'こまごまと気配りをすることが面倒に感じることがある。', category: Category.depersonalization}, // 3
+    {message: 'この仕事は私の性分に合っていると思うことがある。', category: Category.personalAccomplishment}, // 4
+    {message: '同僚や顧客の顔を見るのも嫌になることがある。', category: Category.depersonalization}, // 5
+    {message: '自分の仕事がつまらなく思えてしかたのないことがある。', category: Category.depersonalization}, // 6
+    {message: '1日の仕事が終わると「やっと終わった」と感じることがある。', category: Category.emotionalExhaustion}, // 7
+    {message: '出勤前、職場に出るのが嫌になって、家にいたいと思うことがある。', category: Category.emotionalExhaustion}, // 8
+    {message: '仕事を終えて、今日は気持ちの良い日だったと思うことがある。', category: Category.personalAccomplishment}, // 9
+    {message: '同僚や顧客と何も話したくなくなるようなことがある。', category: Category.depersonalization}, // 10
+    {message: '仕事の結果はどうでもよいと思うことがある。', category: Category.depersonalization}, // 11
+    {message: '仕事のために心にゆとりがなくなったと感じることがある。', category: Category.emotionalExhaustion}, // 12
+    {message: '今の仕事に心から喜びを感じることがある。', category: Category.personalAccomplishment}, // 13
+    {message: '今の仕事は私にとってあまり意味がないと思うことがある。', category: Category.depersonalization}, // 14
+    {message: '仕事が楽しくて、知らないうちに時間が過ぎることがある。', category: Category.personalAccomplishment}, // 15
+    {message: '体も気持ちも疲れ果てたと思うことがある。', category: Category.emotionalExhaustion}, // 16
+    {message: 'われながら、仕事を上手くやり終えたと思うことがある。', category: Category.personalAccomplishment}, // 17
+  ];
+  
+  function initQuestion() {
+    for (var i = 0; i < questions.length; ++i) {
+      var obj = {
+        message: questions[i].message,
+        category: questions[i].category,
+        selectId: i
+      };
+      var html = $("#selectTemplate").render(obj);
+      $('#questions').append(html);
+    }
+  }
+
+  initQuestion();
+  $('button').button();
+  // 指定のキーの値を更新
+  $("#cal").click(function(){
+    $('#result').empty();
+    createResult(Category.emotionalExhaustion, resultEmotionalExhaustion, '情緒的消耗感', '「仕事を通じて情緒的に力を出し尽くして消耗してしまった状態」と定義します.<BR>サービスのやり取りをする関係のなかで、相手の気持ちを思いやり、勝手放題にふるまう相手をうけいれ、問題を解決していくことを求められることが少なくありません。つまり情緒的なエネルギーを必要とされており、それがバーンアウトへのリスクを高めています。');
+    createResult(Category.depersonalization, resultDepersonalization, '脱人格化', '「サービスの受け手に対する無情で非人間的な対応」と定義します。<BR>バーンアウトとは情緒的資源を使い尽くしてしまった状態です。そのような状態に陥ってしまった人が、さらなる消耗を防ぐために情緒的資源を節約を行います。クライアントや同僚との間に距離を置き、かれらとの関係を仕事上の関係として割り切り、サービスのやり取りを客観視することで自らを守ろうとします。');
+    createResult(Category.personalAccomplishment, resultPersonalAccomplishment, '個人的達成感', '「ヒューマン・サービスの職務にかかわる有能感、達成感」と定義されています<BR>バーンアウトにいたる人は、それ以前までに高いレベルのサービスを提供し続けた人だけに、前後の落差はおおきく、とりわけ本人にとって質の低下は明白です。成果の急激な落ち込みと、自己評価の低下は個人的達成感の低下と名付けられています。');
+  });
+
+  function createResult(category, retFunc, title, guide) {
+    var score = totalSelectValue(category);
+    var ret = retFunc(score);
+    console.log(score);
+    console.log(ret);
+    var obj = {
+      title: title,
+      result: ret,
+      message: Result[ret].message,
+      score: score,
+      guide: guide
+    }
+    var html = $("#resultTemplate").render(obj);
+    $('#result').append(html);
+  }
+
+  function totalSelectValue(category) {
+    var total = 0;
+    $('[category="' + category + '"]', '#questions').each(function() {
+      total = total + parseInt($(this).val());
+    });
+    return total;
+  }
+  
+  // 情緒的消耗感
+  function resultEmotionalExhaustion(score) {
+    if (score < 16) {
+      return 'Ok';
+    }
+    if (score < 19) {
+      return 'Normal';
+    }
+    if (score < 21) {
+      return 'Caution';
+    }
+    if (score < 24) {
+      return 'Warning';
+    }
+    if (score >= 24) {
+      return 'Danger';
+    }
+  }
+
+  // 脱人格化
+  function resultDepersonalization(score) {
+    if (score < 12) {
+      return 'Ok';
+    }
+    if (score < 15) {
+      return 'Normal';
+    }
+    if (score < 18) {
+      return 'Caution';
+    }
+    if (score < 21) {
+      return 'Warning';
+    }
+    if (score >= 21) {
+      return 'Danger';
+    }
+  }
+  
+  // 個人的達成感の低下
+  function resultPersonalAccomplishment(score) {
+    if (score < 10) {
+      return 'Danger';
+    }
+    if (score < 13) {
+      return 'Warning';
+    }
+    if (score < 16) {
+      return 'Caution';
+    }
+    if (score < 18) {
+      return 'Warning';
+    }
+    if (score >= 18) {
+      return 'Ok';
+    }
+  }
+}); 
+</script>
+</head>
+<body>
+<div id="contents">
+  <h1>バーンアウト尺度</h1>
+  <p>あなたは最近６カ月ぐらいのあいだに、次のようなことをどの程度経験しましたか？</p>
+  <p>右欄の当てはまると思う番号にチェックをつけてください。</p>
+  <table id="questions">
+  </table>
+  <button id="cal">判定</button>
+  <h2>結果</h2>
+  <div id="result">
+  </div>
+  <p>このバーンアウト尺度は日本版バーンアウト尺度(久保,1998)より作成しています</p>
+  <p><a href="http://www.sesi.or.jp/blog/2012/08/08/%E3%83%90%E3%83%BC%E3%83%B3%E3%82%A2%E3%82%A6%E3%83%88%EF%BC%88%E7%87%83%E3%81%88%E3%81%A4%E3%81%8D%E7%97%87%E5%80%99%E7%BE%A4%EF%BC%89%E5%B0%BA%E5%BA%A6/">採点基準は単純な加算方式</a>としています</p>
+</div>
+</body>
+</html>
