@@ -1,4 +1,4 @@
-﻿export type ActiveTest = 'burnout' | 'boreout'
+export type ActiveTest = 'burnout' | 'boreout'
 
 export type RiskLevel = 'Ok' | 'Normal' | 'Caution' | 'Warning' | 'Danger'
 

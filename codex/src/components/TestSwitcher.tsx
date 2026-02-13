@@ -1,4 +1,4 @@
-﻿import type { ActiveTest } from '../types/mental'
+import type { ActiveTest } from '../types/mental'
 
 type TestSwitcherProps = {
   activeTest: ActiveTest

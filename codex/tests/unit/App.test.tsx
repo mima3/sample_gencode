@@ -1,7 +1,9 @@
-﻿import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import App from '../../src/App'
 import { HISTORY_STORAGE_KEY } from '../../src/utils/history'
+
+const originalCrypto = globalThis.crypto
 
 describe('App', () => {
   beforeEach(() => {
@@ -11,7 +13,7 @@ describe('App', () => {
   afterEach(() => {
     // restore crypto if a test stubs it
     Object.defineProperty(globalThis, 'crypto', {
-      value: crypto,
+      value: originalCrypto,
       configurable: true,
     })
   })

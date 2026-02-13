@@ -1,4 +1,4 @@
-﻿function Hero() {
+function Hero() {
   return (
     <section className="hero">
       <p className="hero-kicker">Mental Check</p>

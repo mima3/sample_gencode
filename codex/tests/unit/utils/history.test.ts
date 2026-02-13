@@ -1,4 +1,4 @@
-﻿import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { HistoryEntry } from '../../../src/types/mental'
 import {
   HISTORY_LIMIT_PER_TYPE,
@@ -30,8 +30,10 @@ function createEntry(index: number, testType: 'burnout' | 'boreout'): HistoryEnt
 
 describe('history storage', () => {
   beforeEach(() => {
-    window.localStorage.clear()
     vi.unstubAllGlobals()
+    if (typeof window !== 'undefined' && window?.localStorage) {
+      window.localStorage.clear()
+    }
   })
 
   it('loads empty array when storage is empty or invalid', () => {
@@ -49,14 +51,43 @@ describe('history storage', () => {
     expect(loadHistory()).toEqual([])
   })
 
-  it('keeps latest 100 items per test type', () => {
-    let latest: HistoryEntry[] = []
+  it('ignores entries when results elements are malformed', () => {
+    const malformed = [
+      {
+        id: 'x',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        testType: 'burnout',
+        answers: { 0: 1 },
+        results: [null],
+      },
+    ]
 
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(malformed))
+    expect(loadHistory()).toEqual([])
+  })
+
+  it('ignores entries when results is not an array', () => {
+    const malformed = [
+      {
+        id: 'x',
+        createdAt: '2026-01-01T00:00:00.000Z',
+        testType: 'burnout',
+        answers: { 0: 1 },
+        results: 'invalid',
+      },
+    ]
+
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(malformed))
+    expect(loadHistory()).toEqual([])
+  })
+
+  it('keeps latest 100 items per test type', () => {
     for (let i = 0; i <= HISTORY_LIMIT_PER_TYPE + 20; i += 1) {
-      latest = appendHistory(createEntry(i, 'burnout'))
-      latest = appendHistory(createEntry(i, 'boreout'))
+      appendHistory(createEntry(i, 'burnout'))
+      appendHistory(createEntry(i, 'boreout'))
     }
 
+    const latest = loadHistory()
     const burnout = latest.filter((item) => item.testType === 'burnout')
     const boreout = latest.filter((item) => item.testType === 'boreout')
 
@@ -80,5 +111,18 @@ describe('history storage', () => {
 
     expect(loadHistory()).toEqual([])
     expect(() => saveHistory([createEntry(1, 'burnout')])).not.toThrow()
+  })
+
+  it('does not throw when localStorage.setItem fails', () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+    const setItemSpy = vi.spyOn(window.localStorage.__proto__, 'setItem').mockImplementation(() => {
+      throw new Error('quota exceeded')
+    })
+
+    expect(() => saveHistory([createEntry(1, 'burnout')])).not.toThrow()
+    expect(consoleErrorSpy).toHaveBeenCalled()
+
+    setItemSpy.mockRestore()
+    consoleErrorSpy.mockRestore()
   })
 })

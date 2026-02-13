@@ -1,4 +1,4 @@
-﻿import { RESULT_LABELS, burnoutResultDefinitions } from '../data/mentalTests'
+import { RESULT_LABELS, burnoutResultDefinitions } from '../data/mentalTests'
 import type { Answers, BurnoutQuestion, TestResult } from '../types/mental'
 
 export function calculateBurnoutResults(answers: Answers, questions: BurnoutQuestion[]): TestResult[] {

@@ -1,4 +1,4 @@
-﻿import type { ActiveTest, HistoryEntry } from '../types/mental'
+import type { ActiveTest, HistoryEntry } from '../types/mental'
 
 export const HISTORY_STORAGE_KEY = 'mentaltest.history.v1'
 export const HISTORY_LIMIT_PER_TYPE = 100
@@ -6,6 +6,27 @@ export const HISTORY_LIMIT_PER_TYPE = 100
 function toHistoryEntryArray(value: unknown): HistoryEntry[] {
   if (!Array.isArray(value)) {
     return []
+  }
+
+  const isValidResults = (results: unknown): results is HistoryEntry['results'] => {
+    if (!Array.isArray(results)) {
+      return false
+    }
+
+    return results.every((result) => {
+      if (!result || typeof result !== 'object') {
+        return false
+      }
+
+      const record = result as Record<string, unknown>
+      return (
+        typeof record.key === 'string' &&
+        typeof record.title === 'string' &&
+        typeof record.score === 'number' &&
+        typeof record.label === 'string' &&
+        typeof record.guide === 'string'
+      )
+    })
   }
 
   return value.filter((entry): entry is HistoryEntry => {
@@ -18,8 +39,10 @@ function toHistoryEntryArray(value: unknown): HistoryEntry[] {
       typeof record.id === 'string' &&
       typeof record.createdAt === 'string' &&
       (record.testType === 'burnout' || record.testType === 'boreout') &&
+      !!record.answers &&
       typeof record.answers === 'object' &&
-      Array.isArray(record.results)
+      !Array.isArray(record.answers) &&
+      isValidResults(record.results)
     )
   })
 }
@@ -64,7 +87,12 @@ export function saveHistory(history: HistoryEntry[]): void {
     return
   }
 
-  window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(limitByType(history)))
+  try {
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(limitByType(history)))
+  } catch (error) {
+    // Best-effort persistence: log and continue without interrupting UX.
+    console.error('Failed to persist history to localStorage.', error)
+  }
 }
 
 export function appendHistory(entry: HistoryEntry): HistoryEntry[] {

@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import './App.css'
 import Hero from './components/Hero'
 import QuestionList from './components/QuestionList'

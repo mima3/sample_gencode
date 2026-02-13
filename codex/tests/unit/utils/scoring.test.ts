@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { burnoutQuestions } from '../../../src/data/mentalTests'
 import type { Answers } from '../../../src/types/mental'
 import { calculateBoreoutResult, calculateBurnoutResults } from '../../../src/utils/scoring'
