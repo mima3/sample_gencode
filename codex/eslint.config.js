@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'coverage']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [js.configs.recommended, reactHooks.configs.flat.recommended, reactRefresh.configs.vite],
@@ -21,6 +21,7 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      complexity: ['error', 10],
     },
   },
   {
@@ -38,6 +39,7 @@ export default defineConfig([
     rules: {
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^[A-Z_]' }],
+      complexity: ['error', 10],
     },
   },
 ])

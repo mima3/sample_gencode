@@ -40,6 +40,15 @@ npm run lint
 
 - ESLint による静的解析を実行します。
 
+### テスト（カバレッジ計測）
+
+```bash
+npm run test:coverage
+```
+
+- Vitest で単体テストを実行し、カバレッジを計測します。
+- カバレッジレポートは `coverage/` に出力されます。
+
 ## ビルドする（本番用）
 
 ```bash
