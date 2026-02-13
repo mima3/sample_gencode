@@ -1,4 +1,4 @@
-﻿import type { TestResult } from '../types/mental'
+import type { TestResult } from '../types/mental'
 
 type ResultGridProps = {
   results: TestResult[]

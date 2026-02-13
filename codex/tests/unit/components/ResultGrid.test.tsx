@@ -1,4 +1,4 @@
-﻿import { render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import ResultGrid from '../../../src/components/ResultGrid'
 import type { TestResult } from '../../../src/types/mental'

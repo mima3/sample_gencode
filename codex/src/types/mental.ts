@@ -1,4 +1,4 @@
-﻿export type ActiveTest = 'burnout' | 'boreout'
+export type ActiveTest = 'burnout' | 'boreout'
 
 export type RiskLevel = 'Ok' | 'Normal' | 'Caution' | 'Warning' | 'Danger'
 
@@ -34,4 +34,12 @@ export type TestResult = {
   rank: RiskLevel
   label: string
   guide: string
+}
+
+export type HistoryEntry = {
+  id: string
+  createdAt: string
+  testType: ActiveTest
+  answers: Answers
+  results: TestResult[]
 }

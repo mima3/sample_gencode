@@ -1,4 +1,4 @@
-﻿# メンタルチェックアプリ（React + Vite + TypeScript）
+# メンタルチェックアプリ（React + Vite + TypeScript）
 
 このフォルダは、React + Vite + TypeScript で作成したバーンアウト/ボーアウト診断アプリです。
 

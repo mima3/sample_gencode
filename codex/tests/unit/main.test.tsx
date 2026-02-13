@@ -1,4 +1,4 @@
-﻿import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 const renderMock = vi.fn()
 const createRootMock = vi.fn(() => ({ render: renderMock }))

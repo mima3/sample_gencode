@@ -1,4 +1,4 @@
-﻿import type { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import type { Answers, Option, QuestionInput } from '../types/mental'
 
 type QuestionListProps = {
