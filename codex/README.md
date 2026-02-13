@@ -19,7 +19,7 @@ npm install
 npm run dev
 ```
 
-- 起動後、表示される URL（通常 `http://localhost:5173`）をブラウザで開いて確認します。
+- 起動後、表示される URL（通常 `http://localhost:5173/mental/`）をブラウザで開いて確認します。
 - 変更は HMR で即時反映されます。
 
 ## チェックする（型チェック / Lint）
