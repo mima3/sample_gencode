@@ -1,6 +1,7 @@
 ﻿import { RESULT_LABELS, burnoutResultDefinitions } from '../data/mentalTests'
+import type { Answers, BurnoutQuestion, TestResult } from '../types/mental'
 
-export function calculateBurnoutResults(answers, questions) {
+export function calculateBurnoutResults(answers: Answers, questions: BurnoutQuestion[]): TestResult[] {
   const categoryTotals = questions.reduce(
     (acc, question, index) => {
       acc[question.category] += Number(answers[index])
@@ -28,7 +29,7 @@ export function calculateBurnoutResults(answers, questions) {
   })
 }
 
-export function calculateBoreoutResult(answers) {
+export function calculateBoreoutResult(answers: Answers): TestResult {
   const score = Object.values(answers).reduce((sum, value) => sum + Number(value), 0)
   const rank = score < 4 ? 'Ok' : 'Warning'
 

@@ -13,9 +13,10 @@ import {
   createBurnoutInitialAnswers,
 } from './data/mentalTests'
 import { calculateBoreoutResult, calculateBurnoutResults } from './utils/scoring'
+import type { ActiveTest } from './types/mental'
 
 function App() {
-  const [activeTest, setActiveTest] = useState('burnout')
+  const [activeTest, setActiveTest] = useState<ActiveTest>('burnout')
   const [burnoutAnswers, setBurnoutAnswers] = useState(createBurnoutInitialAnswers)
   const [boreoutAnswers, setBoreoutAnswers] = useState(createBoreoutInitialAnswers)
 

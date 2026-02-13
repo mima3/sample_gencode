@@ -1,8 +1,14 @@
-﻿function ResultGrid({ results }) {
+﻿import type { TestResult } from '../types/mental'
+
+type ResultGridProps = {
+  results: TestResult[]
+}
+
+function ResultGrid({ results }: ResultGridProps) {
   return (
     <div className="result-grid">
       {results.map((result) => (
-        <article className="result-card" key={result.key ?? result.title}>
+        <article className="result-card" key={result.key}>
           <h3>{result.title}</h3>
           <p className={`rank-badge is-${result.rank.toLowerCase()}`}>{result.label}</p>
           <p className="result-score">score: {result.score}</p>

@@ -1,4 +1,13 @@
-﻿export const RESULT_LABELS = {
+﻿import type {
+  Answers,
+  BoreoutQuestion,
+  BurnoutQuestion,
+  BurnoutResultDefinition,
+  Option,
+  RiskLevel,
+} from '../types/mental'
+
+export const RESULT_LABELS: Record<RiskLevel, string> = {
   Ok: '良好',
   Normal: '平均',
   Caution: '注意',
@@ -6,7 +15,7 @@
   Danger: '危険',
 }
 
-export const BURNOUT_OPTIONS = [
+export const BURNOUT_OPTIONS: Option[] = [
   { value: 1, label: 'ない' },
   { value: 2, label: 'まれにある' },
   { value: 3, label: '時々ある' },
@@ -14,12 +23,12 @@ export const BURNOUT_OPTIONS = [
   { value: 5, label: 'いつもある' },
 ]
 
-export const BOREOUT_OPTIONS = [
+export const BOREOUT_OPTIONS: Option[] = [
   { value: 0, label: 'いいえ' },
   { value: 1, label: 'はい' },
 ]
 
-export const burnoutQuestions = [
+export const burnoutQuestions: BurnoutQuestion[] = [
   { text: 'こんな、仕事もうやめたいと思うことがある。', category: 'emotionalExhaustion' },
   { text: 'われを忘れるほど仕事に熱中することがある。', category: 'personalAccomplishment' },
   { text: 'こまごまと気くばりをすることが面倒に感じることがある。', category: 'depersonalization' },
@@ -39,7 +48,7 @@ export const burnoutQuestions = [
   { text: 'われながら、仕事をうまくやり終えたと思うことがある。', category: 'personalAccomplishment' },
 ]
 
-export const boreoutQuestions = [
+export const boreoutQuestions: BoreoutQuestion[] = [
   '仕事中に内職をする。',
   '仕事が暇すぎると感じる場面がある。',
   '時には、実際には忙しそうに仕事をしているふりをする。',
@@ -52,13 +61,13 @@ export const boreoutQuestions = [
   '仕事にあまりやりがいがない。',
 ]
 
-export const burnoutResultDefinitions = [
+export const burnoutResultDefinitions: BurnoutResultDefinition[] = [
   {
     key: 'emotionalExhaustion',
     title: '情緒的消耗感',
     guide:
       '仕事に取り組んで消耗した感覚。ここが高い場合は、休息の確保と業務負荷の調整を優先してください。',
-    evaluator: (score) => {
+    evaluator: (score: number) => {
       if (score < 16) return 'Ok'
       if (score < 19) return 'Normal'
       if (score < 21) return 'Caution'
@@ -71,7 +80,7 @@ export const burnoutResultDefinitions = [
     title: '脱人格化',
     guide:
       '人に対する距離感が極端になる傾向。高い場合は、業務の振り返りや相談の機会を増やしてください。',
-    evaluator: (score) => {
+    evaluator: (score: number) => {
       if (score < 12) return 'Ok'
       if (score < 15) return 'Normal'
       if (score < 18) return 'Caution'
@@ -84,7 +93,7 @@ export const burnoutResultDefinitions = [
     title: '個人的達成感',
     guide:
       '仕事の達成実感を示す指標。低いほど負荷が高い状態です。評価だけでなく、達成を言語化して可視化することが有効です。',
-    evaluator: (score) => {
+    evaluator: (score: number) => {
       if (score < 10) return 'Danger'
       if (score < 13) return 'Warning'
       if (score < 16) return 'Caution'
@@ -94,16 +103,17 @@ export const burnoutResultDefinitions = [
   },
 ]
 
-export function createBurnoutInitialAnswers() {
-  return burnoutQuestions.reduce((acc, _, index) => {
-    acc[index] = BURNOUT_OPTIONS[0].value
+export function createBurnoutInitialAnswers(): Answers {
+  return burnoutQuestions.reduce<Answers>((acc, _, index) => {
+    acc[index] = BURNOUT_OPTIONS[0]!.value
     return acc
   }, {})
 }
 
-export function createBoreoutInitialAnswers() {
-  return boreoutQuestions.reduce((acc, _, index) => {
-    acc[index] = BOREOUT_OPTIONS[0].value
+export function createBoreoutInitialAnswers(): Answers {
+  return boreoutQuestions.reduce<Answers>((acc, _, index) => {
+    acc[index] = BOREOUT_OPTIONS[0]!.value
     return acc
   }, {})
 }
+

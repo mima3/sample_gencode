@@ -1,4 +1,14 @@
-﻿function QuestionList({ answers, options, questions, onChange }) {
+﻿import type { Dispatch, SetStateAction } from 'react'
+import type { Answers, Option, QuestionInput } from '../types/mental'
+
+type QuestionListProps = {
+  answers: Answers
+  options: Option[]
+  questions: QuestionInput[]
+  onChange: Dispatch<SetStateAction<Answers>>
+}
+
+function QuestionList({ answers, options, questions, onChange }: QuestionListProps) {
   return (
     <div className="question-grid" role="list">
       {questions.map((question, index) => {
