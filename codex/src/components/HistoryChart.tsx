@@ -74,7 +74,7 @@ function HistoryChart({ entries, testType }: HistoryChartProps) {
   )
 
   return (
-    <div className="history-chart" aria-label="スコア履歴グラフ">
+    <div className="history-chart" role="region" aria-label="スコア履歴グラフ">
       <div className="history-line-legend">
         {series.map((item) => (
           <span className="history-line-legend-item" key={item.key}>
