@@ -10,7 +10,7 @@ describe('Hero', () => {
     expect(screen.getByRole('heading', { name: 'バーンアウト / ボーアウト セルフチェック' })).toBeInTheDocument()
     expect(
       screen.getByText(
-        '既存の診断ロジックを維持したまま、React + Vite で再構成したモダンUIです。各設問に回答すると結果がリアルタイムで更新されます。',
+        '既存の診断ロジックを維持したまま、React + Vite で再構成したモダンUIです。',
       ),
     ).toBeInTheDocument()
   })
